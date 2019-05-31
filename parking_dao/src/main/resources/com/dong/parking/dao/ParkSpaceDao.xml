@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dong.parking.dao.ParkSpaceDao">
+
+    <resultMap id="parkSpace" type="ParkSpace">
+        <id property="id" column="id" javaType="int"/>
+        <result property="spaceId" column="space_id" javaType="String"/>
+        <result property="status" column="status" javaType="Integer"/>
+
+        <result property="emptySpaceNum" column="empty_space_num" javaType="Integer"/>
+        <result property="reservedSpaceNum" column="reserved_space_num" javaType="Integer"/>
+        <result property="occupiedSpaceNum" column="occupied_space_num" javaType="Integer"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ParkSpace">
+        insert into park_space(space_id,status,empty_space_num,reserved_space_num,occupied_space_num)
+        values(#{spaceId},#{status},#{emptySpaceNum},#{reservedSpaceNum},#{occupiedSpaceNum})
+    </insert>
+
+    <update id="update" parameterType="ParkSpace">
+        update park_space
+        <set>
+            <if test="spaceId != null">space_id=#{spaceId},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="emptySpaceNum != null">empty_space_num=#{emptySpaceNum},</if>
+            <if test="reservedSpaceNum != null">reserved_space_num=#{reservedSpaceNum},</if>
+            <if test="occupiedSpaceNum != null">occupied_space_num=#{occupiedSpaceNum}</if>
+        </set>
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from park_space where id = #{id}
+    </delete>
+
+    <select id="select" parameterType="Integer">
+        select * from park_space where id = #{id}
+    </select>
+
+    <select id="selectByStatus" parameterType="Integer">
+        select * from park_space where status = #{status}
+    </select>
+
+    <select id="selectBySpaceId" parameterType="String">
+        select * from park_space where space_id = #{spaceId}
+    </select>
+</mapper>

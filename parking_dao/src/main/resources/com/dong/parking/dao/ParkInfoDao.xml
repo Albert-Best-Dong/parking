@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dong.parking.dao.ParkInfoDao">
+
+    <resultMap id="parkInfo" type="ParkInfo">
+        <id property="id" column="id" javaType="int"/>
+        <result property="parkId" column="park_id" javaType="String"/>
+        <result property="cardNum" column="card_num" javaType="Integer"/>
+
+        <result property="carId" column="car_id" javaType="String"/>
+        <result property="parkIn" column="park_in" javaType="java.util.Date"/>
+        <result property="parkOut" column="park_out" javaType="java.util.Date"/>
+
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ParkInfo">
+        insert into park_info(park_id,card_num,car_id,park_in,park_out) values(#{parkId},#{cardNum},#{carId},#{parkIn},#{parkOut})
+    </insert>
+
+    <update id="update" parameterType="ParkInfo">
+        update park_info set name=#{name},password=#{password},gender=#{gender},age=#{age},
+        birthday=#{birthday},email=#{email},phone=#{phone} where sn=#{sn}
+    </update>
+
+
+
+    <select id="select" parameterType="Integer" resultMap="parkInfo">
+        select * from park_info
+         where id=#{id}
+    </select>
+
+    <select id="selectByCarId" parameterType="String" resultMap="parkInfo">
+        select * from park_info
+         where car_id=#{car_id}
+    </select>
+
+    <select id="selectBySpaceId" parameterType="String" resultMap="parkInfo">
+        select * from park_info
+         where spaceId=#{spaceId}
+    </select>
+
+    <select id="selectAll" resultMap="parkInfo">
+        select * from park_info
+    </select>
+
+</mapper>
