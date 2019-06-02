@@ -1,4 +1,7 @@
 package com.dong.parking.entity;
+
+import java.util.Date;
+
 /**
 *   车位
 *   @author albert
@@ -6,21 +9,42 @@ package com.dong.parking.entity;
 *
 */
 public class ParkSpace {
-    private Integer id;
-    private String spaceId;         //车位号
-    private int status;             //车位状态：0可使用 1占用 2被预定
-    private int totalNum;           //车位总数
-    private int emptySpaceNum;     //剩余车位数
-    private int reservedSpaceNum;  //被预定的车位数
-    private int occupiedSpaceNum;  //被占用的车位数
+
+    private int id;
+    private String floor;
+    private String area;       //车位所属区域
+    private String spaceId;             //车位号
+    private int status;                 //车位状态：0可使用 1占用 2被预定
 
 
-    public Integer getId() {
+
+    private Date createTime;
+    private Date updateTime;
+    private String createBy;
+    private String updateBy;
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getSpaceId() {
@@ -40,35 +64,35 @@ public class ParkSpace {
     }
 
 
-    public int getEmptySpaceNum() {
-        return emptySpaceNum;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setEmptySpaceNum(int emptySpaceNum) {
-        this.emptySpaceNum = emptySpaceNum;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public int getReservedSpaceNum() {
-        return reservedSpaceNum;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setReservedSpaceNum(int reservedSpaceNum) {
-        this.reservedSpaceNum = reservedSpaceNum;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public int getOccupiedSpaceNum() {
-        return occupiedSpaceNum;
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setOccupiedSpaceNum(int occupiedSpaceNum) {
-        this.occupiedSpaceNum = occupiedSpaceNum;
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
     }
 
-    public int getTotalNum() {
-        return totalNum;
+    public String getUpdateBy() {
+        return updateBy;
     }
 
-    public void setTotalNum(int totalNum) {
-        this.totalNum = totalNum;
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 }

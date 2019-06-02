@@ -20,27 +20,27 @@ public class Constant {
     public static final int INIT_FEE = 5;       //最初两小时5元
     public static final int INCREASE_FEE = 1;   //两小时后每半小时1元
 
-    //停车场区域
-    public static final List<String> getPosition() {
-        List<String> list = new ArrayList<String>();
-        list.add("负一楼 A");
-        list.add("负一楼 B");
-        list.add("负一楼 C");
-        list.add("负一楼 D");
-        list.add("负一楼 E");
-        list.add("负二楼 A");
-        list.add("负二楼 B");
-        list.add("负二楼 C");
-        list.add("负二楼 D");
-        list.add("负二楼 E");
-        list.add("负三楼 A");
-        list.add("负三楼 B");
-        list.add("负三楼 C");
-        list.add("负三楼 D");
-        list.add("负三楼 E");
-        return list;
+    //停车场楼层
+    public static final List<String> getFloor() {
+        List<String> floorList = new ArrayList<String>();
+        floorList.add("-1F ");
+
+        floorList.add("-2F ");
+
+        floorList.add("-3F ");
+        return floorList;
     }
 
+    //停车场区域
+    public static final List<String> getArea() {
+        List<String> area = new ArrayList<String>();
+        area.add("A");
+        area.add("B");
+        area.add("C");
+        area.add("D");
+        area.add("E");
+        return area;
+    }
 
 
 }

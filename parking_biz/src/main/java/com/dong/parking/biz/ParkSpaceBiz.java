@@ -1,17 +1,21 @@
 package com.dong.parking.biz;
 
+import com.dong.parking.entity.ParkSpace;
+
 import java.util.List;
 
 public interface ParkSpaceBiz {
-    void add(ParkSpaceBiz parkSpace);
+    void add(ParkSpace parkSpace);
 
-    void edit(ParkSpaceBiz parkSpace);
+    void edit(ParkSpace parkSpace);
 
     void remove(Integer id);
 
-    List<ParkSpaceBiz> findAll();
+    ParkSpace findById(Integer id);
 
-    List<ParkSpaceBiz> findByStatus(int status);
+    List<ParkSpace> findAll();
+
+    List<ParkSpace> findByStatus(int status);
 
 
 }

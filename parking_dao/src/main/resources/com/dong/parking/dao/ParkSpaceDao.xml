@@ -4,43 +4,52 @@
 
     <resultMap id="parkSpace" type="ParkSpace">
         <id property="id" column="id" javaType="int"/>
+        <result property="floor" column="floor" javaType="String"/>
+        <result property="area" column="area" javaType="String"/>
         <result property="spaceId" column="space_id" javaType="String"/>
         <result property="status" column="status" javaType="Integer"/>
 
-        <result property="emptySpaceNum" column="empty_space_num" javaType="Integer"/>
-        <result property="reservedSpaceNum" column="reserved_space_num" javaType="Integer"/>
-        <result property="occupiedSpaceNum" column="occupied_space_num" javaType="Integer"/>
+        <result property="createTime" column="CREATE_TIME" javaType="java.util.Date"/>
+        <result property="updateTime" column="UPDATE_TIME" javaType="java.util.Date"/>
+        <result property="createBy" column="CREATE_BY" javaType="String"/>
+        <result property="updateBy" column="UPDATE_BY" javaType="String"/>
+
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ParkSpace">
-        insert into park_space(space_id,status,empty_space_num,reserved_space_num,occupied_space_num)
-        values(#{spaceId},#{status},#{emptySpaceNum},#{reservedSpaceNum},#{occupiedSpaceNum})
+        insert into park_space(floor,area,space_id,status)
+        values(#{floor},#{area},#{spaceId},#{status})
     </insert>
 
     <update id="update" parameterType="ParkSpace">
         update park_space
         <set>
-            <if test="spaceId != null">space_id=#{spaceId},</if>
-            <if test="status != null">status=#{status},</if>
-            <if test="emptySpaceNum != null">empty_space_num=#{emptySpaceNum},</if>
-            <if test="reservedSpaceNum != null">reserved_space_num=#{reservedSpaceNum},</if>
-            <if test="occupiedSpaceNum != null">occupied_space_num=#{occupiedSpaceNum}</if>
-        </set>
+            <if test="floor != null">floor = #{floor},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="spaceId != null">space_id = #{spaceId},</if>
+            <if test="status != null">status = #{status},</if>
+
+    </set>
+        where id = #{id}
     </update>
 
     <delete id="delete" parameterType="Integer">
         delete from park_space where id = #{id}
     </delete>
 
-    <select id="select" parameterType="Integer">
+    <select id="selectAll" resultMap="parkSpace">
+        select * from park_space
+    </select>
+
+    <select id="select" parameterType="Integer" resultMap="parkSpace">
         select * from park_space where id = #{id}
     </select>
 
-    <select id="selectByStatus" parameterType="Integer">
+    <select id="selectByStatus" parameterType="Integer" resultMap="parkSpace">
         select * from park_space where status = #{status}
     </select>
 
-    <select id="selectBySpaceId" parameterType="String">
+    <select id="selectBySpaceId" parameterType="String" resultMap="parkSpace">
         select * from park_space where space_id = #{spaceId}
     </select>
 </mapper>

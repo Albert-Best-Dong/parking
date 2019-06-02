@@ -4,12 +4,13 @@
 
     <resultMap id="parkInfo" type="ParkInfo">
         <id property="id" column="id" javaType="int"/>
-        <result property="parkId" column="park_id" javaType="String"/>
-        <result property="cardNum" column="card_num" javaType="Integer"/>
+        <result property="spaceId" column="park_space_id" javaType="String"/>
+        <result property="cardId" column="card_id" javaType="Integer"/>
 
         <result property="carId" column="car_id" javaType="String"/>
         <result property="parkIn" column="park_in" javaType="java.util.Date"/>
         <result property="parkOut" column="park_out" javaType="java.util.Date"/>
+        <result property="fee" column="fee" javaType="Integer"/>
 
     </resultMap>
 
@@ -41,7 +42,7 @@
     </select>
 
     <select id="selectAll" resultMap="parkInfo">
-        select * from park_info
+        select * from park_info order by UPDATE_TIME
     </select>
 
 </mapper>

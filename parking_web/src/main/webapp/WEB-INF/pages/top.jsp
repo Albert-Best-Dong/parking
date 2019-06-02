@@ -124,24 +124,28 @@
                     </a>
                     <ul class="nav sub-nav">
                         <li>
-                            <a href="/department/list">
+                            <a href="/parkSpace/list">
                                 <span class="glyphicon glyphicon-calendar"></span> 所有车位</a>
                         </li>
                         <li>
-                            <a href="/department/list">
+                            <a href="/parkSpace/list?status=0">
                                 <span class="glyphicon glyphicon-calendar"></span> 空余车位</a>
                         </li>
                         <li>
-                            <a href="/department/list">
+                            <a href="/parkSpace/list?status=1">
                                 <span class="glyphicon glyphicon-calendar"></span> 占用车位</a>
                         </li>
                         <li>
-                            <a href="/department/list">
+                            <a href="/parkSpace/list?status=2">
                                 <span class="glyphicon glyphicon-calendar"></span> 已预定车位</a>
                         </li>
                         <li class="active">
-                            <a href="/department/to_add">
-                                <span class="glyphicon glyphicon-check"></span> 添加部门 </a>
+                            <a href="/parkSpace/to_add">
+                                <span class="glyphicon glyphicon-check"></span> 添加车位 </a>
+                        </li>
+                        <li class="active">
+                            <a href="/parkSpace/to_add">
+                                <span class="glyphicon glyphicon-check"></span> 批量添加车位 </a>
                         </li>
                     </ul>
                 </li>

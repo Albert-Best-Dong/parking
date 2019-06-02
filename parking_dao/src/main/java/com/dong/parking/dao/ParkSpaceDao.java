@@ -18,7 +18,7 @@ public interface ParkSpaceDao {
 
     List<ParkSpace> selectAll();
 
-    List<ParkSpace> selectByStatus();
+    List<ParkSpace> selectByStatus(Integer status);
 
     void delete(int id);
 }
