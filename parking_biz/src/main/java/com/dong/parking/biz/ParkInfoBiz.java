@@ -8,13 +8,13 @@ import java.util.List;
 public interface ParkInfoBiz {
     public void entry(ParkInfo parkInfo);
 
-    public List<ParkInfo> findByParkId(String parkId);
+    public List<ParkInfo> findBySpaceId(String spaceId);
 
     public ParkInfo findById(int id);
 
-    public ParkInfo findByCarId(String carId);
+    public List<ParkInfo> findByCarId(String carId);
 
-    public double getFee(Date beginTime,Date endTime);
+    public List<ParkInfo> findAll();
 
     public void departure(ParkInfo parkInfo);
 }

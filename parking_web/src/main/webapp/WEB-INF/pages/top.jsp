@@ -78,9 +78,9 @@
             <ul class="nav sidebar-menu">
                 <li class="sidebar-label pt20">日常管理</li>
                 <li>
-                    <a href="/claim_voucher/deal">
+                    <a href="/parkInfo/list">
                         <span class="glyphicon glyphicon-book"></span>
-                        <span class="sidebar-title">停车费管理</span>
+                        <span class="sidebar-title">停车信息管理</span>
                         <span class="sidebar-title-tray">
                 <span class="label label-xs bg-primary">New</span>
               </span>

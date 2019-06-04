@@ -25,19 +25,24 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
 
     }
 
-    public List<ParkInfo> findByParkId(String parkId) {
-        return null;
+    public List<ParkInfo> findBySpaceId(String spaceId) {
+        return parkInfoDao.selectBySpaceId(spaceId);
     }
 
     public ParkInfo findById(int id) {
-        return null;
+        return parkInfoDao.select(id);
     }
 
-    public ParkInfo findByCarId(String carId) {
-        return null;
+    public List<ParkInfo> findByCarId(String carId) {
+        return parkInfoDao.selectByCarId(carId);
     }
 
-    public double getFee(Date beginTime, Date endTime) {
+    public List<ParkInfo> findAll() {
+        return parkInfoDao.selectAll();
+    }
+
+    //计算费用
+    private double getFee(Date beginTime, Date endTime) {
         double hours = 0;
         long begin = beginTime.getTime();
         long end = endTime.getTime();
@@ -52,7 +57,7 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
 
 
     }
-
+    //离开车库，进行更新
     public void departure(ParkInfo parkInfo) {
         Date departureTime = new Date();
         parkInfo.setParkOut(departureTime);
