@@ -18,7 +18,6 @@
                         <div class="section row">
 
                             <div class="col-md-6">
-
                                 <label for="floor" class="field select">
                                     <form:select path="floor" items="${floor}" cssClass="gui-input" placeholder="楼层..."/>
                                     <i class="arrow double"></i>

@@ -43,4 +43,8 @@ public class Constant {
     }
 
 
+    //汽车的状态
+    public static final int STOP= 0;       //停在车位
+    public static final int LEAVE= 1;     //离开车位
+
 }

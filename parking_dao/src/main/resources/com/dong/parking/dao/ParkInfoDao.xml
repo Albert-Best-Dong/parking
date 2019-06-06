@@ -4,29 +4,40 @@
 
     <resultMap id="parkInfo" type="ParkInfo">
         <id property="id" column="id" javaType="int"/>
-        <result property="spaceId" column="park_space_id" javaType="String"/>
+        <result property="parkSpaceId" column="park_space_id" javaType="Integer"/>
         <result property="cardId" column="card_id" javaType="Integer"/>
 
         <result property="carId" column="car_id" javaType="String"/>
         <result property="parkIn" column="park_in" javaType="java.util.Date"/>
         <result property="parkOut" column="park_out" javaType="java.util.Date"/>
-        <result property="fee" column="fee" javaType="Integer"/>
+        <result property="fee" column="fee" javaType="double"/>
+        <result property="status" column="status" javaType="Integer"/>
 
         <association property="parkSpace" column="park_space_id" javaType="ParkSpace">
             <result property="floor" column="floor" javaType="String"/>
             <result property="area" column="area" javaType="String"/>
-            <result property="spaceId" column="spaceId" javaType="String"/>
+            <result property="spaceId" column="psSpaceId" javaType="String"/>
         </association>
     </resultMap>
 
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="ParkInfo">
-        insert into park_info(park_space_id,card_num,car_id,park_in,park_out,fee) values(#{spaceId},#{cardNum},#{carId},#{parkIn},#{parkOut},#{fee})
+        insert into park_info(park_space_id,card_id,car_id,park_in,park_out,fee,status)
+        values(#{parkSpaceId},#{cardId},#{carId},#{parkIn},#{parkOut},#{fee},#{status})
     </insert>
 
     <update id="update" parameterType="ParkInfo">
-        update park_info set name=#{name},password=#{password},gender=#{gender},age=#{age},
-        birthday=#{birthday},email=#{email},phone=#{phone} where sn=#{sn}
+        update park_info 
+        <set>
+            <if test="parkSpaceId != null">park_space_id=#{parkSpaceId},</if>
+            <if test="cardId != null">card_id=#{cardId},</if>
+            <if test="carId != null">car_id=#{carId},</if>
+            <if test="parkIn != null">park_in=#{parkIn},</if>
+            <if test="parkOut != null">park_out=#{parkOut},</if>
+            <if test="fee != null">fee=#{fee},</if>
+            <if test="status != null">status=#{status},</if>
+        </set>
+        where id=#{id}
     </update>
 
 
@@ -38,7 +49,7 @@
     </select>
 
     <select id="selectByCarId" parameterType="String" resultMap="parkInfo">
-        select pi.*,ps.floor floor,ps.area area,ps.space_id spaceId
+        select pi.*,ps.floor floor,ps.area area,ps.space_id psSpaceId
         from park_info pi
         left join park_space ps on ps.id = pi.park_space_id
         where car_id=#{carId}
@@ -46,14 +57,21 @@
 
     <select id="selectBySpaceId" parameterType="String" resultMap="parkInfo">
         select * from park_info
-         where spaceId=#{spaceId}
+         where park_space_id=#{parkSpaceId}
     </select>
 
     <select id="selectAll" resultMap="parkInfo">
-        select pi.*,ps.floor floor,ps.area area,ps.space_id spaceId
+        select pi.*,ps.floor floor,ps.area area,ps.space_id psSpaceId
         from park_info pi
         left join park_space ps on ps.id = pi.park_space_id
         order by UPDATE_TIME
     </select>
 
+    <select id="selectByStatus" resultMap="parkInfo">
+        select pi.*,ps.floor floor,ps.area area,ps.space_id psSpaceId
+        from park_info pi
+        left join park_space ps on ps.id = pi.park_space_id
+        where pi.status = 0
+        order by UPDATE_TIME
+    </select>
 </mapper>

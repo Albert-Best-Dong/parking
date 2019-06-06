@@ -18,4 +18,6 @@ public interface ParkInfoDao {
     List<ParkInfo> selectBySpaceId(String spaceId);     //根据停车位查询
 
     List<ParkInfo> selectByCarId(String CarId);           //根据车牌号查询
+
+    List<ParkInfo> selectByStatus(Integer status);
 }

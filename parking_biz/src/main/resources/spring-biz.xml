@@ -29,8 +29,10 @@
     </tx:advice>
 
     <aop:config>
+
         <aop:pointcut id="txPointcut" expression="execution(* com.dong.parking.biz.impl.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+
     </aop:config>
 
 </beans>

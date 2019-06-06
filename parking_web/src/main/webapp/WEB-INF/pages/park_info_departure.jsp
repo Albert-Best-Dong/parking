@@ -19,10 +19,21 @@
 
                         <div class="section row">
                             <form:hidden path="id"/>
-                            <div class="col-md-6">进入时间</div>
+                            <form:hidden path="parkSpaceId"/>
                             <div class="col-md-6">
+                                <label for="parkIn" class="field-label text-muted fs18 mb10">进入时间</label>
                                 <label for="parkIn" class="field prepend-icon">
-                                    <form:input path="parkIn" cssClass="gui-input" readonly="true" placeholder="车位号..."/>
+                                    <form:input path="parkIn" cssClass="gui-input"  readonly="true" placeholder="车位号..."/>
+                                    <label for="parkIn" class="field-icon">
+                                        <i class="fa fa-user"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="parkOut" class="field-label text-muted fs18 mb10">离开时间</label>
+                                <label for="parkOut" class="field prepend-icon">
+                                    <form:input path="parkOut" cssClass="gui-input"  readonly="true" placeholder="车位号..."/>
                                     <label for="parkIn" class="field-icon">
                                         <i class="fa fa-user"></i>
                                     </label>
@@ -31,9 +42,35 @@
 
                         </div>
 
+                        <div class="section row">
+
+                            <div class="col-md-6">
+                                <label for="carId" class="field-label text-muted fs18 mb10">车牌</label>
+                                <label for="carId" class="field prepend-icon">
+                                    <form:input path="carId" cssClass="gui-input"  readonly="true"/>
+                                    <label for="carId" class="field-icon">
+                                        <i class="fa fa-user"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="fee" class="field-label text-muted fs18 mb10">停车费</label>
+                                <label for="fee" class="field prepend-icon">
+                                    <form:input path="fee" cssClass="gui-input"  readonly="true" placeholder="车位号..."/>
+                                    <label for="fee" class="field-icon">
+                                        <i class="fa fa-user"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+
+
+                        </div>
+
 
                         <div class="panel-footer text-right">
-                            <button type="submit" class="button"> 保存</button>
+                            <button type="submit" class="button"> 提交</button>
                             <button type="button" class="button" onclick="javascript:window.history.go(-1);"> 返回
                             </button>
                         </div>

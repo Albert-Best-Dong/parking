@@ -3,6 +3,7 @@ package com.dong.parking.controller;
 import com.dong.parking.biz.ParkInfoBiz;
 import com.dong.parking.biz.ParkSpaceBiz;
 import com.dong.parking.entity.ParkInfo;
+import com.dong.parking.global.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,12 @@ public class ParkInfoController {
     private ParkInfoBiz parkInfoBiz;
 
     @RequestMapping("/list")
-    public String list(Map<String,Object> map, @RequestParam(value = "carId",required = false)String carId) {
+    public String list(Map<String, Object> map, @RequestParam(value = "carId", required = false) String carId) {
 
 
         if (parkInfoBiz.findByCarId(carId).isEmpty()) {
-            map.put("list", parkInfoBiz.findAll());
-        }else{
+            map.put("list", parkInfoBiz.findByStatus(Constant.STOP));
+        } else {
             map.put("list", parkInfoBiz.findByCarId(carId));
         }
 
@@ -36,25 +37,29 @@ public class ParkInfoController {
 
     /**
      * 正常的情况为：汽车进入停车场，入口处自动采集车辆信息录入系统，同时将车位与车辆绑定，此处留作接口
-     *
+     * <p>
      * 作为测试，先进行手动输入
      */
 
     @RequestMapping("/to_add")
     public String toAdd(Map<String, Object> map) {
         map.put("parkInfo", new ParkInfo());
+        map.put("pslist", parkSpaceBiz.findByStatus(Constant.EMPTY_SPACE));
         return "park_info_add";
     }
 
     @RequestMapping("/add")
-    public String add() {
-
+    public String add(ParkInfo parkInfo) {
+        parkInfoBiz.entry(parkInfo);
         return "redirect:list";
     }
 
     @RequestMapping("to_update")
     public String toDeparture(Map<String, Object> map, @RequestParam(value = "id") Integer id) {
-        map.put("parkInfo", parkInfoBiz.findById(id));
+
+        ParkInfo parkInfo = parkInfoBiz.findById(id);
+        parkInfoBiz.toDeparture(parkInfo);
+        map.put("parkInfo", parkInfo);
 
         return "/park_info_departure";
     }

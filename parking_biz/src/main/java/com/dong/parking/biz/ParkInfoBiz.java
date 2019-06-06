@@ -16,5 +16,9 @@ public interface ParkInfoBiz {
 
     public List<ParkInfo> findAll();
 
+    public List<ParkInfo> findByStatus(Integer status);
+
     public void departure(ParkInfo parkInfo);
+
+    public void toDeparture(ParkInfo parkInfo);
 }

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:include page="top.jsp"/>
@@ -23,8 +24,7 @@
                                     <i class="fa fa-trash"></i>
                                 </button>
                                 <button type="button" class="btn btn-default light">
-                                    <i class="fa fa-plus"
-                                       onclick="javascript:window.location.href='/parkInfo/to_add';"></i>
+                                    <i class="fa fa-plus" onclick="javascript:window.location.href='/parkInfo/to_add';"></i>
                                 </button>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 <td>${info.parkSpace.area}</td>
                                 <td>${info.parkSpace.spaceId}</td>
                                 <td>${info.carId}</td>
-                                <td>${info.parkIn}</td>
+                                <td><spring:eval expression="info.parkIn"/></td>
                                 <td>${info.fee}</td>
                                 <td>
                                     <a href="/parkInfo/to_update?id=${info.id}">收费</a>
