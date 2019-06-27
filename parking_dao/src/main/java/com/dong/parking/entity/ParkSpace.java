@@ -3,7 +3,7 @@ package com.dong.parking.entity;
 import java.util.Date;
 
 /**
-*   车位
+*   车位信息
 *   @author albert
 *   @date 2019/5/31
 *

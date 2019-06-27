@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 /**
-*   停车位具体信息
+*   停车具体信息
 *   @author albert
 *   @date 2019/5/31
 *
@@ -14,8 +14,8 @@ import java.util.Date;
 public class ParkInfo {
 
     private int id;                     //停车信息id
-    private int parkSpaceId;                //车位号，应该由硬件设备采集传输到系统
-    private int cardId;                 //卡号
+    private Integer parkSpaceId;                //车位号，应该由硬件设备采集传输到系统
+    private Integer cardId;                 //卡号
     private String carId;               //车牌号
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date parkIn;                //停车时间
@@ -34,19 +34,19 @@ public class ParkInfo {
         this.id = id;
     }
 
-    public int getParkSpaceId() {
+    public Integer getParkSpaceId() {
         return parkSpaceId;
     }
 
-    public void setParkSpaceId(int parkSpaceId) {
+    public void setParkSpaceId(Integer parkSpaceId) {
         this.parkSpaceId = parkSpaceId;
     }
 
-    public int getCardId() {
+    public Integer getCardId() {
         return cardId;
     }
 
-    public void setCardId(int cardId) {
+    public void setCardId(Integer cardId) {
         this.cardId = cardId;
     }
 

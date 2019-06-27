@@ -3,17 +3,23 @@ package com.dong.parking.entity;
 import java.util.Date;
 
 /**
-*   费用账单
+*   费用账单，用于统计停车费
 *   @author albert
 *   @date 2019/5/31
 *
 */
 public class Bill {
     private int id;
-    private double money;
+    private Integer parkInfoId;
+//    private double money;
     private int type;               //收取方式
-    private Date payTime;           //付款时间
-    private String carId;           //车牌号
+//    private Date payTime;           //付款时间
+//    private Date entryTime;
+//    private Date depatureTime;
+    private String operator;
+
+    private ParkInfo parkInfo;
+
 
     public int getId() {
         return id;
@@ -23,13 +29,6 @@ public class Bill {
         this.id = id;
     }
 
-    public double getMoney() {
-        return money;
-    }
-
-    public void setMoney(double money) {
-        this.money = money;
-    }
 
     public int getType() {
         return type;
@@ -39,19 +38,30 @@ public class Bill {
         this.type = type;
     }
 
-    public Date getPayTime() {
-        return payTime;
+
+
+
+    public String getOperator() {
+        return operator;
     }
 
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
+    public void setOperator(String operator) {
+        this.operator = operator;
     }
 
-    public String getCarId() {
-        return carId;
+    public Integer getParkInfoId() {
+        return parkInfoId;
     }
 
-    public void setCarId(String carId) {
-        this.carId = carId;
+    public void setParkInfoId(Integer parkInfoId) {
+        this.parkInfoId = parkInfoId;
+    }
+
+    public ParkInfo getParkInfo() {
+        return parkInfo;
+    }
+
+    public void setParkInfo(ParkInfo parkInfo) {
+        this.parkInfo = parkInfo;
     }
 }

@@ -4,13 +4,21 @@ import com.dong.parking.biz.ParkInfoBiz;
 import com.dong.parking.biz.ParkSpaceBiz;
 import com.dong.parking.entity.ParkInfo;
 import com.dong.parking.global.Constant;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
-
+/**
+*   停车信息控制层
+*   @author albert
+*   @date 2019/6/14
+*
+*/
 @Controller("parkInfoController")
 @RequestMapping("/parkInfo")
 public class ParkInfoController {
@@ -22,15 +30,17 @@ public class ParkInfoController {
     private ParkInfoBiz parkInfoBiz;
 
     @RequestMapping("/list")
-    public String list(Map<String, Object> map, @RequestParam(value = "carId", required = false) String carId) {
+    public String list(Map<String, Object> map, @RequestParam(value = "carId", required = false) String carId,
+                       @RequestParam(defaultValue = "1", required = true, value = "pageNo") Integer pageNo) {
+        List<ParkInfo> list = null;
+        Integer pageSize = 2;
+        PageHelper.startPage(pageNo, pageSize);
 
+        if (parkInfoBiz.findByCarId(carId).isEmpty()) list = parkInfoBiz.findByStatus(Constant.STOP);
+        else list =  parkInfoBiz.findByCarId(carId);
 
-        if (parkInfoBiz.findByCarId(carId).isEmpty()) {
-            map.put("list", parkInfoBiz.findByStatus(Constant.STOP));
-        } else {
-            map.put("list", parkInfoBiz.findByCarId(carId));
-        }
-
+        PageInfo<ParkInfo> pageInfo = new PageInfo<ParkInfo>(list);
+        map.put("pageInfo", pageInfo);
 
         return "park_info_list";
     }
@@ -43,6 +53,7 @@ public class ParkInfoController {
 
     @RequestMapping("/to_add")
     public String toAdd(Map<String, Object> map) {
+
         map.put("parkInfo", new ParkInfo());
         map.put("pslist", parkSpaceBiz.findByStatus(Constant.EMPTY_SPACE));
         return "park_info_add";

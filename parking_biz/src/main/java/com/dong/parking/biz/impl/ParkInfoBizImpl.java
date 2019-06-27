@@ -31,7 +31,7 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
         parkSpace.setStatus(Constant.OCCUPIED_SPACE);
         parkSpaceBiz.edit(parkSpace);
     }
-
+    //根据车位号查找
     public List<ParkInfo> findBySpaceId(String spaceId) {
         return parkInfoDao.selectBySpaceId(spaceId);
     }
@@ -39,7 +39,7 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
     public ParkInfo findById(int id) {
         return parkInfoDao.select(id);
     }
-
+    //根据车牌查找
     public List<ParkInfo> findByCarId(String carId) {
         return parkInfoDao.selectByCarId(carId);
     }
@@ -61,9 +61,9 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
         hours = (diff / (60 * 60 * 1000));
 
         if (hours <= 2) {
-            return 5;
+            return Constant.INIT_FEE;
         }else{
-            return (5 + (hours - 2) * 2);
+            return (Constant.INIT_FEE + (hours - 2) * Constant.INCREASE_FEE*2);
         }
 
 
@@ -73,6 +73,7 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
     public void toDeparture(ParkInfo parkInfo) {
         Date departureTime = new Date();
         parkInfo.setParkOut(departureTime);
+
         double fee = getFee(parkInfo.getParkIn(), parkInfo.getParkOut());
         parkInfo.setFee(fee);
         parkInfoDao.update(parkInfo);
@@ -80,9 +81,12 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
     //离开车库，进行更新
     public void departure(ParkInfo parkInfo) {
         parkInfo.setStatus(Constant.LEAVE);     //设置车辆状态为离开
+        parkInfoDao.update(parkInfo);
+
+        //获取需要更新的parkSpace
         ParkSpace parkSpace = parkSpaceBiz.findById(parkInfo.getParkSpaceId());
         parkSpace.setStatus(Constant.EMPTY_SPACE);      //变更停车为状态为空闲
-        parkInfoDao.update(parkInfo);
+
         parkSpaceBiz.edit(parkSpace);
     }
 

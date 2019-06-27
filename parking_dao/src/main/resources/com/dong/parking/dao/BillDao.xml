@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dong.parking.dao.BillDao">
+
+    <resultMap id="bill" type="Bill">
+        <id property="id" column="id" javaType="int"/>
+
+        <result property="type" column="pay_type" javaType="Integer"/>
+        <result property="parkInfoId" column="park_info_id" javaType="Integer"/>
+        <result property="operator" column="operator" javaType="String"/>
+        
+        <association property="parkInfo" column="park_info_id" javaType="ParkInfo">
+            <result property="carId" column="car_id" javaType="String"/>
+            <result property="fee" column="fee" javaType="double"/>
+            <result property="parkOut" column="park_out" javaType="java.util.Date"/>
+        </association>
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Bill">
+        insert into bill(park_info_id,pay_type,operator)
+        values (#{parkInfoId},#{type},#{operator})
+    </insert>
+
+
+    <select id="select" parameterType="Integer" resultMap="bill">
+
+    </select>
+
+    <select id="selectByCarId" parameterType="String" resultMap="bill">
+
+    </select>
+
+
+
+    <select id="selectAll" resultMap="bill">
+        select * from bill
+    </select>
+
+</mapper>
