@@ -3,7 +3,7 @@
 <mapper namespace="com.dong.parking.dao.BillDao">
 
     <resultMap id="bill" type="Bill">
-        <id property="id" column="id" javaType="int"/>
+        <id property="id" column="id" javaType="Integer"/>
 
         <result property="type" column="pay_type" javaType="Integer"/>
         <result property="parkInfoId" column="park_info_id" javaType="Integer"/>
@@ -15,6 +15,13 @@
             <result property="parkOut" column="park_out" javaType="java.util.Date"/>
         </association>
     </resultMap>
+
+
+
+
+
+
+
 
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Bill">
@@ -34,7 +41,10 @@
 
 
     <select id="selectAll" resultMap="bill">
-        select * from bill
+        select b.*,pi.car_id,pi.fee fee,pi.park_out
+        from bill b
+        left join park_info pi on pi.id = b.park_info_id
+
     </select>
 
 </mapper>

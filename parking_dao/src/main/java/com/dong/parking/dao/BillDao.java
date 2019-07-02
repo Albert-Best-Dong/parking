@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("billDao")
 public interface BillDao {
     void insert(Bill bill);
 

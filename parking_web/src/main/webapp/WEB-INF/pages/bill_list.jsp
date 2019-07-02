@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="top.jsp"/>
 
@@ -66,7 +67,7 @@
                                 </td>
                                 <td>${bill.parkInfo.fee}</td>
                                 <td>${bill.type}</td>
-                                <td>${bill.parkInfo.parkOut}</td>
+                                <td><fmt:formatDate value="${bill.parkInfo.parkOut}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>${bill.parkInfo.carId}</td>
                                 <td>${bill.operator}</td>
                             </tr>

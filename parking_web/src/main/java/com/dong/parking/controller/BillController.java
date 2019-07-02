@@ -19,7 +19,7 @@ public class BillController {
     @RequestMapping("/list")
     public String list(Map<String, Object> map) {
         List<Bill> list = billBiz.findAll();
-
+        System.out.println();
         map.put("list", list);
 
         return "bill_list";
