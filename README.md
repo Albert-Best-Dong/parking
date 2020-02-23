@@ -29,3 +29,6 @@
    ![image](https://github.com/Albert-Best-Dong/parking/blob/master/img/to_fee.png)  
    
     账单管理：方便管理者按照需求对停车费用进行统计之类的操作
+    
+   ![image](https://github.com/Albert-Best-Dong/parking/blob/master/img/bill.png) 
+   该部分为车主离开后自动生成
