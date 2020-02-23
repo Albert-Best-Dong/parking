@@ -24,7 +24,7 @@ public class ParkInfoBizImpl implements ParkInfoBiz {
     //进入停车场
     public void entry(ParkInfo parkInfo) {
         parkInfo.setStatus(Constant.STOP);          //设置车辆状态为泊车
-        parkInfo.setFee(0);
+        parkInfo.setFee(5);
         parkInfoDao.insert(parkInfo);
         //变更停车位状态为占用
         ParkSpace parkSpace = parkSpaceBiz.findById(parkInfo.getParkSpaceId());

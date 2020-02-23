@@ -42,6 +42,7 @@ public class ParkSpaceController {
     @RequestMapping("/to_update")
     public String toUpdate(Map<String, Object> map, @RequestParam int id) {
         map.put("floor", Constant.getFloor());
+
         map.put("area", Constant.getArea());
         map.put("parkSpace", parkSpaceBiz.findById(id));
         return "park_space_update";

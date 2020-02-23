@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8">
+  <title>地图多点路径规划|室内三维地图引擎|易景空间地图ESmap</title>
+  <meta name="keywords" content="多点路径规划,室内地图,三维地图引擎,三维地图制作,室内定位,易景地图,ESMap" />
+  <meta name="description" content="多点路径规划,传入多个途经的点,返回一条导航路径,易景地图第三人称导航,易景室内三维地图引擎提供地图浏览、缩放、旋转、图层显隐等基础功能，支持自定义室内地图显示风格及样式，可自动绘制楼层热力图、散点图等专题地图，快速进行空间大数据分析展示。支持跨楼层精准的点到点之间的最短、最优路径计算，支持对路径结果进行导航和动画,并提供丰富的地图主题资源供二次开发调用。" />
+  <link href="css/common.css" rel="stylesheet">
+</head>
+<style type="text/css">
+  #pannel {
+    position: absolute;
+    left: 2%;
+    bottom: 10%;
+    z-index: 999;
+  }
+	button,input[type="button"] {
+			padding: 7px 11px;
+			background-color: #ccc;
+			border: none;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+  #description {
+    position: absolute;
+    left: 50%;
+    top: 86px;
+    padding: 10px 25px;
+    color:#fff;
+    background: #5e5e5e;
+    border-radius: 4px;
+    margin-left: -140px;
+    opacity: 0.7;
+  }
+
+  #tool-tip {
+    position: absolute;
+    color: #fff;
+    font-size: 18px;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 5px;
+    z-index: 2;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: none;
+  }
+
+  .container-fluid h1 {
+    text-align: center;
+  }
+</style>
+
+<body ms-controller="ctrl" class="ms-controller">
+  <span id="tool-tip"> </span>
+  <div id="map-container"></div>
+  <div class="loading">
+    <div class="lodingImg"></div>
+  </div>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <h1>易景室内三维地图引擎 (多点路径规划)</h1>
+      
+      <div class="tips-right">
+          <span class="tip1"></span>
+          <span class="tip2"></span>
+      </div>
+      <div class="tips-msg">
+          <div class="msg msg1">
+              <div class="erweima"></div>
+              <p>手机扫一扫进入体验</p>
+          </div>
+          <div class="msg msg2">
+              <h4>多点路径规划模拟导航</h4>
+              <p>1. 多点路径规划,传入多个途经的点,返回一条导航路径</p>
+              <p>2. 用于车辆/行人导航，自动计算路程和所剩时间</p>
+              <p>3. new esmap.ESNavigation({...}) 创建导航对象</p>
+
+              <div style="display: none">多点路径规划,传入多个途经的点,返回一条导航路径,易景室内三维地图引擎提供地图浏览、缩放、旋转、图层显隐等基础功能，支持自定义室内地图显示风格及样式，可自动绘制楼层热力图、散点图等专题地图，快速进行空间大数据分析展示。支持跨楼层精准的点到点之间的最短、最优路径计算，支持对路径结果进行导航和动画,并提供丰富的地图主题资源供二次开发调用。</div>
+          </div>
+      </div>
+    </div>
+  </nav>
+  <div id="description">
+    暂无导航提示信息
+  </div>
+  <div id="pannel">
+    <input type="button" class="btn btn-default btnclass" onclick="showRoutes()" value="显示多点路径规划" />
+    <input type="button" class="btn btn-default btnclass" onclick="startNavi()" value="开始导航" />
+  </div>
+  <div class="viewmode-floor btn-floor-vertical" data-toggle="buttons">
+    <button id="btn2D" class="btn btn-default">2D</button>
+    <button id="btn3D" class="btn btn-default">3D</button>
+  </div>
+  <script src="../lib/config.js"></script>
+  <script src="../lib/esmap.min.js"></script>
+  <script src="../lib/jquery-2.1.4.min.js"></script>
+    <script src="../lib/jquery.qrcode.min.js"></script>
+    <script src="../lib/tips_controls.js"></script>
+  <script type="text/javascript">
+    //定义全局map变量
+    var map;
+    var esmapID = getQueryString('id') || defaultOpt.mapID;
+    var styleid = getQueryString("styleid") || defaultOpt.themeID;
+    // 导航对象
+    var navi;
+    // 点击计数
+    var clickCount = 0;
+    var floorControl;
+    var mapCoord = null;
+    window.onload = function () {
+      if (navi) {
+        navi.stop();
+        navi = null;
+      }
+      // 楼层控制控件配置参数
+      var ctlOpt = new esmap.ESControlOptions({
+        position: esmap.ESControlPositon.RIGHT_TOP,
+        imgURL: 'image/wedgets/'
+        // allLayer: true
+        // size:"normal"
+      })
+      // 放大、缩小控件配置
+      var ctlOpt1 = new esmap.ESControlOptions({
+        position: esmap.ESControlPositon.LEFT_TOP, // 位置 左上角
+        // 位置x,y的偏移量
+        offset: {
+          x: 20,
+          y: 70
+        },
+        imgURL: 'image/wedgets/'
+      })
+			var container = document.getElementById('map-container');
+      map = new esmap.ESMap({
+        container:container, // 渲染dom
+        mapDataSrc: "../data", //地图数据位置
+        mapThemeSrc: "../data/theme", //主题数据位置
+        focusAlphaMode: false
+      });
+
+      map.openMapById('example');
+      map.showCompass = true; //显示指南针 
+      //地图加载完成回调
+      map.on('loadComplete', function () {
+        floorControl = new esmap.ESScrollFloorsControl(map, ctlOpt);
+        var zoomControl = new esmap.ESZoomControl(map, ctlOpt1);
+        createNavi();
+        bingEvents();
+      });
+      //判断起点是否是同一处坐标
+      var lastCoord = null;
+      var curfnum = null;
+      var h = 1;
+      //点击地图事件。开始选点开始后，点击地图一次为起点，第二次点击为终点
+      map.on('mapClickNode', function (event) {
+        console.log(event)
+        if (event.nodeType == 4) {
+          curfnum = event.floor;
+          h = 1;
+          mapCoord = event.hitCoord;
+        }
+        if (event.nodeType == 5) {
+          curfnum = event.FloorNum;
+          h = event.data_.RoomHigh;
+          mapCoord = event.hitCoord;
+        }
+      })
+      //为模型填充div添加点击事件
+      container.onclick = function () {
+        var fnum = curfnum;
+        fnum&&mapCoord&&show(fnum, mapCoord);
+      };
+      container.ontouchend = function(){
+        var fnum = curfnum;
+        fnum&&mapCoord&&show(fnum, mapCoord);
+      }
+      show = function (fnum, coord) {
+        if (!navi) return;
+        if (coord != null) {
+          //第三次点击清除路径，重现设置起点起点
+          if (clickCount == 2) {
+            navi.clearAll();
+            clickCount = 0;
+            lastCoord = null;
+          }
+
+          //第一次点击添加起点
+          if (clickCount == 0) {
+            lastCoord = coord;
+            navi.setStartPoint({
+              x: coord.x,
+              y: coord.y,
+              fnum: fnum,
+              height: h,
+              url: 'image/start.png',
+              size: 64
+            });
+          } else if (clickCount == 1) { //添加终点并画路线
+            //判断起点和终点是否相同
+            if (lastCoord.x == coord.x) {
+              alert("起点和终点不能相同!,请重新选点")
+              return;
+            }
+            navi.setEndPoint({
+              x: coord.x,
+              y: coord.y,
+              fnum: fnum,
+              height: h,
+              url: 'image/end.png',
+              size: 64
+            });
+            // 画导航线
+            navi.drawNaviLine();
+          }
+          clickCount++;
+        }
+        curfnum = null;
+      };
+    };
+
+    function createNavi() {
+      if (map.naviData.length == 0) {
+        console.warn("地图导航数据信息不存在！");
+        return;
+      }
+      if (!navi) {
+        //初始化导航对象
+        navi = new esmap.ESNavigation({
+          map: map,
+          locationMarkerUrl: 'image/pointer.png',
+          locationMarkerSize: 150,
+          speed: 1,
+          followAngle: true,
+          followPosition: true,
+          followGap: 3,
+          tiltAngle: 30,
+          audioPlay: true,
+          // scaleLevel:0,
+          mode: 1,
+          offsetHeight: 1,
+          // 设置导航线的样式
+          lineStyle: {
+            color: '#58a2e4',
+            //设置线为导航线样式
+            lineType: esmap.ESLineType.ESARROW,
+            // lineType: esmap.ESLineType.FULL,
+            lineWidth: 6,
+            offsetHeight: 0.5,
+            smooth: true,
+            seeThrough: false,
+            noAnimate: true
+            // 设置边线的颜色   
+            // godEdgeColor: '#920000',
+            // 设置箭头颜色
+            // godArrowColor: "#ffffff"
+          },
+          scaleAnimate: true,
+          isMultiFloors: false
+        });
+      }
+
+      navi.on("walking", function (data) {
+        //显示导航展示信息
+        showDis(data);
+      })
+
+      navi.on("complete", function () {
+        console.log("停止");
+        document.getElementById('description').innerText = "到达终点";
+      })
+    }
+
+    function clearNavi() {
+      if (navi)
+        navi.clearAll();
+      clickCount = 0;
+      document.getElementById("description").innerText = "暂无导航提示信息";
+    }
+
+    function showRoutes(){
+        var floorLayer = map.getFloor(1)
+        var layer = new esmap.ESLayer(esmap.ESLayerType.IMAGE_MARKER)
+
+        var points = [
+          {
+            x:12683440.762306975,
+            y:2557860.254868082,
+            fnum:1
+          },
+          {
+            x:12683431.592634823,
+            y:2557866.496353754,
+            fnum:1
+          },
+          {
+            x:12683444.57360346,
+            y:2557874.806226114,
+            fnum:1
+          },
+          {
+            x:12683464.002802169,
+            y:2557879.928353332,
+            fnum:1
+          }
+        ]
+        // 12683438.7341726
+        // 12683438.7341726
+        points.forEach(function(p){
+          var im = new esmap.ESImageMarker({
+            x: p.x,
+            y: p.y,   //如果不添加x和y，则默认坐标在地图中心。
+            url: 'image/user.png',  //图片标注的图片地址
+            size: 64,   			//图片大小 或者 size:{w:32,h:64},
+            spritify:true,			//跟随地图缩放变化大小，默认为true，可选参数
+            height:1,    			//距离地面高度
+            showLevel: 20,  		//地图缩放等级达到多少时隐藏,可选参数
+            seeThrough: true,		//是否可以穿透楼层一直显示,可选参数
+            //angle:30,  	//如果设置了就是固定marker角度，与地图一起旋转。(size需要重新设置)
+            id: 2017,   			//id，可自定义
+            name: 'myMarker'   		//name可自定义
+        });
+        layer.addMarker(im)
+        })
+        floorLayer.addLayer(layer)
+        navi.queryByPoints(points)
+        navi.drawNaviLine();
+    }
+    function startNavi() {
+      if(navi.isSimulating){
+        navi.stop();
+        navi.reset();
+      }
+      navi.simulate();
+    }
+    //绑定事件
+    function bingEvents() {
+      // 2维显示事件
+      document.getElementById('btn2D').onclick = function () {
+        map.viewMode = esmap.ESViewMode.MODE_2D; // 2维模式
+      };
+
+      // // 3维显示事件
+      document.getElementById('btn3D').onclick = function () {
+        map.viewMode = esmap.ESViewMode.MODE_3D;; // 3维模式
+      };
+    }
+    //显示路径数据
+    function showDis(data) {
+      //距终点的距离
+      var distance = data.remain;
+      //路线提示信息
+      var info = navi.naviDescriptions[data.index];
+      var f = info[0] + parseInt(data.distanceToNext) + info[2];
+      //普通人每分钟走80米。
+      var time = distance / 80;
+      var m = parseInt(time);
+      var s = Math.floor((time % 1) * 60);
+      document.getElementById('description').innerHTML = '<p>距终点：' + distance.toFixed(1) + ' 米</p><p>大约需要：  ' + m + '  分钟   ' + s +
+        '   秒</p><p>路线提示：' + f + ' </p>';
+    };
+  </script>
+</body>
+
+</html>

@@ -23,7 +23,6 @@ public class BillAdvice {
 
     @After("execution(* com.dong.parking.controller.ParkInfoController.departure(..))")
     public void generateBill(JoinPoint joinPoint) {
-        System.out.println("后置增强");
         Object args[] = joinPoint.getArgs();
         System.out.println(joinPoint.getTarget().getClass().getSimpleName());
         ParkInfo parkInfo = null;
